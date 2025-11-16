@@ -1,27 +1,77 @@
 //a simple game of rock, paper, scissors
+
 //establish player and computer scores
-//create array of choices
-//create function using random number generator to select computer choice
-//set random number generator to pull choices from array
-//create function to get player choice
+let humanScore = 0;
+let computerScore = 0;
+
 //create function to get computer choice
+function getComputerChoice() {
+  const choices = ['rock', 'paper', 'scissors'];
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex];
+}
+
+//create function to get player choice
+function getHumanChoice() {
+  let choice = prompt("Enter rock, paper, or scissors:");
+  if (!choice) return getHumanChoice();
+
+  choice = choice.toLowerCase();
+
+  while (!["rock", "paper", "scissors"].includes(choice)) {
+    choice = prompt("Invalid choice. Enter rock, paper, or scissors:")
+      .toLowerCase();
+  }
+
+  return choice;
+}
+
 //create function to play a round
-//create event listeners for player choices
-//start if/else statements to determine winner of round
-  //if player choice is rock
-    //if computer choice is rock - tie
-    //elseif computer choice is paper - computer wins
-    //else computer choice is scissors - player wins
-  //if player choice is paper
-    //if computer choice is rock - player wins
-    //elseif computer choice is paper - tie
-    //else computer choice is scissors - comuter wins
-  //if player choice is scissors
-    //if computer choice is rock - computer wins
-    //elseif computer choice is paper - player wins
-    //else computer choice is scissors - tie
-//end if/else statements
+function playRound(humanChoice, computerChoice) {
+  if (humanChoice === computerChoice) {
+    return "Its a tie!";
+  } else if (
+    (humanChoice === 'rock' && computerChoice === 'scissors') ||
+    (humanChoice === 'paper' && computerChoice === 'rock') ||
+    (humanChoice === 'scissors' && computerChoice === 'paper')
+  ) {
+    humanScore++;
+    return "You win this round!";
+  } else {
+    computerScore++;
+    return "Computer wins this round!";
+  }
+}
+
 //create function to update scores and display results
-//create function to reset game
+function updateScores() {
+  console.log(`Human Score: ${humanScore}`);
+  console.log(`Computer Score: ${computerScore}`);
+}
+
 //declare winner when a score reaches 5
-//end game
+function checkWinner() {
+  if (humanScore === 5) {
+    console.log('Congratulations! You are the overall winner!');
+  }
+  else if (computerScore === 5) {
+    console.log('Computer is the overall winner! Better luck next time.');
+  }
+}
+
+//main game function
+function playGame() {
+  while (humanScore < 5 && computerScore < 5) {
+    const humanSelection = getHumanChoice();
+    const computerSelection = getComputerChoice();
+    console.log(`You chose: ${humanSelection}`);
+    console.log(`Computer chose: ${computerSelection}`);
+    console.log(playRound(humanSelection, computerSelection));
+    updateScores();
+  }
+  checkWinner();
+}
+
+playGame();
+
+//end game.
